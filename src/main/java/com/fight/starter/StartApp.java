@@ -4,7 +4,6 @@ import com.fight.starter.bolt.WordCounter;
 import com.fight.starter.bolt.WordNormalizer;
 import com.fight.starter.spout.WordReader;
 import org.apache.storm.Config;
-import org.apache.storm.LocalCluster;
 import org.apache.storm.StormSubmitter;
 import org.apache.storm.topology.TopologyBuilder;
 import org.apache.storm.tuple.Fields;
@@ -24,11 +23,11 @@ public class StartApp {
         conf.setDebug(true);
         //Topology run
         conf.put(Config.TOPOLOGY_MAX_SPOUT_PENDING, 1);
-        LocalCluster cluster = new LocalCluster();
-        cluster.submitTopology("Getting-Started-Topology", conf, builder.createTopology());
-
-        Thread.sleep(1000);
-        cluster.shutdown();
-//		StormSubmitter.submitTopology("Word-COUNT-Topology", conf, builder.createTopology());
+//        LocalCluster cluster = new LocalCluster();
+//        cluster.submitTopology("Getting-Started-Topology", conf, builder.createTopology());
+//
+//        Thread.sleep(1000);
+//        cluster.shutdown();
+		StormSubmitter.submitTopology("Word-COUNT-Topology", conf, builder.createTopology());
     }
 }
