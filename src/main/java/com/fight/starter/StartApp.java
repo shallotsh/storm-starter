@@ -18,17 +18,8 @@ public class StartApp {
         builder.setBolt("word-counter", new WordCounter(),1)
                 .fieldsGrouping("word-normalizer", new Fields("word"));
 
-        //Configuration
-        Config conf = new Config();
-        conf.put("wordsFile", args[0]);
-        conf.setDebug(false);
-        //Topology run
-        conf.put(Config.TOPOLOGY_MAX_SPOUT_PENDING, 1);
         LocalCluster cluster = new LocalCluster();
-        cluster.submitTopology("Getting-Started-Topology", conf, builder.createTopology());
-
-        Thread.sleep(1000);
-        cluster.shutdown();
+        cluster.submitTopology("Getting-Started-Topology", new Config(), builder.createTopology());
 //		StormSubmitter.submitTopology("Word-COUNT-Topology", conf, builder.createTopology());
     }
 }

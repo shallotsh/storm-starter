@@ -14,22 +14,22 @@ public class WordNormalizer extends BaseRichBolt {
 
     private OutputCollector collector;
 
-    public void prepare(Map map, TopologyContext topologyContext, OutputCollector collector) {
-        this.collector = collector;
+    @Override
+    public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
+        this.collector=collector;
     }
 
+    @Override
     public void execute(Tuple input) {
-        String str = input.getStringByField("sentence");
-        String[] values = str.split(" ");
-        for(String word : values){
-            if(word != null && word.trim().length() > 0){
-                continue;
-            }
-            this.collector.emit(new Values(word.trim(), 1));
+        String line = input.getStringByField("line");
+        String[] words = line.split("\t");
+        for (String word : words) {
+            collector.emit(new Values(word));
         }
     }
 
+    @Override
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-        declarer.declare(new Fields("word", "num"));
+        declarer.declare(new Fields("word"));
     }
 }
