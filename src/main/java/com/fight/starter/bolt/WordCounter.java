@@ -5,7 +5,6 @@ import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseRichBolt;
 import org.apache.storm.tuple.Tuple;
-import redis.clients.jedis.Jedis;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +14,6 @@ public class WordCounter extends BaseRichBolt {
     private Integer id;
     private String name;
     private Map<String, String> counters;
-    private Jedis jedis;
 
     @Override
     public void cleanup() {
@@ -30,7 +28,6 @@ public class WordCounter extends BaseRichBolt {
         this.id = context.getThisTaskId();
         this.name = context.getThisComponentId();
         this.counters = new HashMap<String, String>();
-        jedis = new Jedis("redis", 6379);
     }
 
     public void execute(Tuple input) {
@@ -48,7 +45,6 @@ public class WordCounter extends BaseRichBolt {
         System.out.println(counters);
         //保存数据到redis
         //redis key wordcount:Map
-        jedis.hmset("wordcount",counters);
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
