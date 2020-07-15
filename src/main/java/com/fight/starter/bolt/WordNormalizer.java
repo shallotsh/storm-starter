@@ -1,6 +1,5 @@
 package com.fight.starter.bolt;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.OutputFieldsDeclarer;
@@ -15,7 +14,7 @@ public class WordNormalizer extends BaseRichBolt {
 
     private OutputCollector collector;
 
-    public void prepare(Map<String, Object> topoConf, TopologyContext context, OutputCollector collector) {
+    public void prepare(Map map, TopologyContext topologyContext, OutputCollector collector) {
         this.collector = collector;
     }
 
@@ -23,7 +22,7 @@ public class WordNormalizer extends BaseRichBolt {
         String str = input.getStringByField("sentence");
         String[] values = str.split(" ");
         for(String word : values){
-            if(StringUtils.isBlank(word)){
+            if(word != null && word.trim().length() > 0){
                 continue;
             }
             this.collector.emit(new Values(word.trim(), 1));

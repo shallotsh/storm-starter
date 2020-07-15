@@ -1,6 +1,5 @@
 package com.fight.starter.spout;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.storm.spout.SpoutOutputCollector;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.OutputFieldsDeclarer;
@@ -21,7 +20,7 @@ public class WordReader extends BaseRichSpout {
     private TopologyContext context;
     private BufferedReader bufferedReader;
 
-    public void open(Map<String, Object> conf, TopologyContext context, SpoutOutputCollector collector) {
+    public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
         this.collector = collector;
         this.context = context;
         try {
@@ -34,8 +33,8 @@ public class WordReader extends BaseRichSpout {
     public void nextTuple() {
         try {
             String line = bufferedReader.readLine();
-            if(StringUtils.isNotBlank(line)){
-                this.collector.emit(new Values(line), UUID.randomUUID());
+            if(line != null && line.trim().length() > 0){
+                this.collector.emit(new Values(line.trim()), UUID.randomUUID());
             }
         } catch (IOException e) {
             e.printStackTrace();

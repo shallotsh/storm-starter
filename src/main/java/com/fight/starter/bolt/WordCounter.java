@@ -17,14 +17,13 @@ public class WordCounter extends BaseRichBolt {
 
     @Override
     public void cleanup() {
-        super.cleanup();
         System.out.println("-- Word Counter ["+name+"-"+id+"] --");
         for(Map.Entry<String, String> entry : counters.entrySet()){
             System.out.println(entry.getKey()+": "+entry.getValue());
         }
     }
 
-    public void prepare(Map<String, Object> topoConf, TopologyContext context, OutputCollector collector) {
+    public void prepare(Map topoConf, TopologyContext context, OutputCollector collector) {
         this.id = context.getThisTaskId();
         this.name = context.getThisComponentId();
         this.counters = new HashMap<String, String>();
